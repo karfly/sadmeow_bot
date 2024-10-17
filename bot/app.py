@@ -181,7 +181,7 @@ async def meow_handler(update: Update, context: CallbackContext) -> None:
         rarity_percentage = meow_info['rarity_percentage']
 
         # Construct the caption
-        caption = f"{emoji} <b>{selected_meow}</b>\nRarity: <code>{rarity_percentage}</code> (max rarity: <code>0.01%</code>)\n\n<i>Cooldown: you can send another meow in 10m</i>"
+        caption = f"{emoji} <b>{selected_meow}</b>\nRarity: <code>{rarity_percentage}</code> (best: <code>0.01%</code>)\n\n<i>Cooldown: you can send another meow in 10m</i>"
 
         file_path = os.path.join('meows', file_name)  # Adjust if your files are stored elsewhere
 

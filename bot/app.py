@@ -17,7 +17,7 @@ from bot.config import config
 logger = logging.getLogger(__name__)
 
 user_last_meow_time = {}
-COOLDOWN_PERIOD = 30  # 30 seconds cooldown
+COOLDOWN_PERIOD = 10*60  # 30 seconds cooldown
 
 # Define the total weight for probability calculations
 TOTAL_WEIGHT = 10000
@@ -181,7 +181,7 @@ async def meow_handler(update: Update, context: CallbackContext) -> None:
         rarity_percentage = meow_info['rarity_percentage']
 
         # Construct the caption
-        caption = f"{emoji} <b>{selected_meow}</b>\nRarity: <code>{rarity_percentage}</code>\n\n<i>Cooldown: send another meow in 30s</i>"
+        caption = f"{emoji} <b>{selected_meow}</b>\nRarity: <code>{rarity_percentage}</code> (max rarity: <code>0.01%</code>)\n\n<i>Cooldown: you can send another meow in 10m</i>"
 
         file_path = os.path.join('meows', file_name)  # Adjust if your files are stored elsewhere
 

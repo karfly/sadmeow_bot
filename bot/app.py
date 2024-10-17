@@ -2,6 +2,7 @@ import logging
 import asyncio
 import random
 import os
+import time
 from uuid import uuid4
 from telegram.ext import (
     ApplicationBuilder,
@@ -14,6 +15,9 @@ from telegram.constants import ParseMode
 from bot.config import config
 
 logger = logging.getLogger(__name__)
+
+user_last_meow_time = {}
+COOLDOWN_PERIOD = 30  # 30 seconds cooldown
 
 # Define the total weight for probability calculations
 TOTAL_WEIGHT = 10000
@@ -153,6 +157,19 @@ async def error_handler(update: Update, context: CallbackContext) -> None:
     )
 
 async def meow_handler(update: Update, context: CallbackContext) -> None:
+    user_id = update.effective_user.id
+    current_time = time.time()
+
+    # Check if the user is on cooldown
+    if user_id in user_last_meow_time:
+        last_meow_time = user_last_meow_time[user_id]
+        if current_time - last_meow_time < COOLDOWN_PERIOD:
+            # User is still on cooldown, do not reply
+            return
+
+    # Update the user's last meow time
+    user_last_meow_time[user_id] = current_time
+
     try:
         files = list(meows.keys())
         weights = [meows[meow]['weight'] for meow in files]
@@ -164,7 +181,7 @@ async def meow_handler(update: Update, context: CallbackContext) -> None:
         rarity_percentage = meow_info['rarity_percentage']
 
         # Construct the caption
-        caption = f"{emoji} <b>{selected_meow}</b>\nRarity: <code>{rarity_percentage}</code>"
+        caption = f"{emoji} <b>{selected_meow}</b>\nRarity: <code>{rarity_percentage}</code>\n\n<i>Cooldown: send another meow in 30s</i>"
 
         file_path = os.path.join('meows', file_name)  # Adjust if your files are stored elsewhere
 

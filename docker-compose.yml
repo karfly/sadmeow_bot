@@ -1,0 +1,15 @@
+services:
+  bot:
+    platform: linux/arm64
+    command: python3 run.py
+    restart: always
+    build:
+      context: "./"
+    env_file:
+      - .env
+    volumes:
+      - .:/code
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2048m"  # avoid disk thrashing

@@ -1,0 +1,5 @@
+python-telegram-bot[job-queue, rate-limiter]==21.2
+PyYAML~=6.0.1
+pydantic~=2.5.3
+pydantic-settings~=2.1.0
+iso639-lang~=2.2.2
